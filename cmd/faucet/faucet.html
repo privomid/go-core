@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{.NetworkTitle}} 🚰 Core Authenticated Faucet</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/cryptohub-digital/coco@1.1.4/dist/css/coco.min.css" integrity="sha384-oHEcBjbmLAzG2Iwiq7B0jNw7ml6FnjSm9sYN5isPKdWbxlJqgb/12CgRO4RKT2WA" crossorigin="anonymous" />
+  <link href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsSAAALEgHS3X78AAAChElEQVRYhcVXy43bMBB9EfaedLDeCqxUEAfgRTx5K8huB0oFUTpwKohTQbQX8SIgSgfeCmJ3sKrAwSyGDk3PiNQmQB7gC01q3gzffPjqeDwiB8bZNwBW/Cv595qPPgJ4ArADMPRV12Z9FECSgHF2AaABsA4MpjAC2ALY9FW3fzEB4ywZ/pTrjYCRSTSzCHC4BwDLvzAe4idFsK+6pyQB42zJxnPDnQvSySomcUYg03P6UMv7QpA47wBcJ86ekbiKNrQTximMTV91sWEPWm+MsyS+D8qeJYtz7RdOETDOEvuvysGPfdVtJjw7gbPmV2LbrU/VK/wJvWbgvq+6bY7xBB44wnv+4URgIsc/v8B47Ajd+11fdTtpsydQC/8dpPzlaNVM2uvlkTWwijQkKv+MAN+ZJDzNuJQlS2FtTBknFMw6xqiEfk5x2qSME+gKFsL6xX1xlsypjBcOGGfXwXW3lFkaASnXpUhpOMRNyDhL578HS++Ms/tCISAhdx/CNEs4UBbcx/8bCum+FbbZQ4byzVLaqEVACveWUysHUlWVnHrWgCS4a27LJ3BKSQUrxr0iQKnS7goukZJnF4WIa8MtqVzYP3KTkeqHNBFRpuyeu+FEC32vtV/2yod1SOz7IfxFfabxBLQWSl6VqcFSQ2K6uqHvkgbABr4Jm+hgG+thhvFWMf7FO1UEi7WiBSq/g3E2R4DeeM2eS+PZIdREPBNq9xUfHgSlL7hF14m58G04G0hT8dRoFmIMCk6ZOUVfTFfauyCXRC6IbC2lqPoyYhFt/8HjZHIky3kbNnyvcx8qBx7jJ2fKOa9juhYSmVZWCRRqUj8NG1nDbDaBiAwpPm5Y+9kFC8BvdEcrTS/2KxYAAAAASUVORK5CYII=" rel="icon" type="image/png" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.0/jquery.min.js" integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-noty/2.4.1/jquery.noty.min.js" integrity="sha256-/kln4DiDHB0fZHUdUeZBy7XXTMJO8Y4f+GV4et0x2QM=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js" integrity="sha256-4iQZ6BVL4qNKlQ27TExEhBN1HFPvAvAMbFavKKosSWQ=" crossorigin="anonymous"></script>
+  <style>
+    .hero {
+      margin-bottom: 1.5em;
+    }
+    div.address {
+      margin-bottom: 0.7em;
+    }
+    div.amount {
+      margin-bottom: 1em;
+    }
+    abbr {
+      position: relative;
+      cursor: help;
+    }
+    abbr:hover::after {
+      position: absolute;
+      bottom: 100%;
+      width: 20em;
+      padding: 1em;
+      background: #fff;
+      content: attr(title);
+      z-index: 1;
+      border: 3px rgb(74, 74, 74) dotted;
+    }
+  </style>
+</head>
+<body class="has-sticky-footer">
+  <main>
+    <section class="hero is-primary">
+      <div class="hero-body">
+        <div class="container">
+          <h1 class="title">
+            Core Blockchain Faucet 🚰
+          </h1>
+          <h2 class="subtitle">
+            {{.Network}} Authenticated Faucet
+          </h2>
+        </div>
+      </div>
+    </section>
+    <section>
+      <div class="container">
+        <div>
+          <div class="address">
+            <label for="social" class="label">Social network Url{{if .NoAuth}} | Wallet{{end}}</label>
+            <div class="field has-addons">
+              <div class="control is-expanded">
+                <input id="social" class="input" type="text" placeholder="https://…{{if .NoAuth}} | CB…{{end}}" />
+              </div>
+              <div class="control">
+                <a class="button is-success" onclick="{{if $.Recaptcha}}grecaptcha.execute(){{else}}submit({{$idx}}){{end}}">
+                  Fund me
+                </a>
+              </div>
+            </div>
+            <p class="help">Social network Url containing your Core {{.Network}} Wallet address{{if .NoAuth}} or Wallet address itself{{end}}</p>
+          </div>
+          <div class="amount">
+            <label for="amount-primary" class="label">Amount</label>
+            <div class="control">
+              {{range $idx, $amount := .Amounts}}
+              <label class="radio">
+                <input id="amount-primary" type="radio" name="tier" />
+                {{$amount}} [{{index $.Periods $idx}}]
+              </label>
+              {{end}}
+            </div>
+          </div>
+          {{if .Recaptcha}}<div class="g-recaptcha" data-sitekey="{{.Recaptcha}}" data-callback="submit" data-size="invisible"></div>{{end}}
+        </div>
+        <div class="stats">
+          <div class="tags are-medium">
+            <span class="tag">🛰 <span id="peers"></span> peers</span>
+            <span class="tag">🧱 <span id="block"></span> blocks</span>
+            <span class="tag">🟢 <span id="funds"></span> cores</span>
+            <span class="tag">🧳 <span id="funded"></span> funded</span>
+          </div>
+        </div>
+        <hr />
+      </div>
+    </section>
+    <section>
+      <div class="container">
+        <div class="content is-medium">
+          <h2>How does faucet work?</h2>
+          <p>
+            This faucet is running on the {{.Network}} network. To prevent malicious actors from exhausting all available funds or accumulating enough Cores to mount long running spam attacks, requests are tied to common 3rd party social network accounts. Anyone having a Twitter or Facebook account may request funds within the permitted limits.
+          </p>
+          <ul>
+            <li>
+              <strong>🐙 Github gist</strong> To request funds via Github gist, make a <a href="https://gist.github.com" target="_blank">public gist</a> with your Core address pasted into the contents (surrounding text doesn't matter).<br/>Copy-paste the <abbr title="Click on the 'Create public gist' and copy Url adrress from your browser">gist Url</abbr> into the above input box and fire away!
+            </li>
+            <li>
+              <strong>🐦 Twitter</strong> To request funds via Twitter, make a <a href="https://twitter.com/intent/tweet?text=Requesting%20faucet%20funds%20into%20xc1%E2%80%A6%20on%20the%20%23{{.Network}}%20%23Core%20test%20network." target="_blank">tweet</a> with your Core address pasted into the contents (surrounding text doesn't matter).<br/>Copy-paste the <abbr title="Click on the Moment and find its URL in the address bar of your web browser, or open the menu on the top right of the Moment, and click Copy link to this">tweets Url</abbr> into the above input box and fire away!
+            </li>
+            <li>
+              <strong>👍 Facebook</strong> To request funds via Facebook, publish a new <em>public</em> post with your Core address embedded into the content (surrounding text doesn't matter).<br/>Copy-paste the <abbr title="Click on the Post Timestamp of the Facebook post and click on Copy Link Address">posts Url</abbr> into the above input box and fire away!
+            </li>
+            {{if .NoAuth}}
+            <li>
+              <strong>🔓 Without authentication</strong> To request funds <em>without authentication</em>, simply copy-paste your Core address into the above input box and fire away!<br/>This mode is susceptible to Byzantine attacks.
+            </li>
+            {{end}}
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <div class="container">
+      <div class="columns is-gapless">
+        <div class="column is-paddingless">
+          <strong>Faucet 🚰</strong> <em>a <a href="https://coreblockchain.cc" target="_blank">Core Blockchain</a> faucet</em>
+        </div>
+        <div class="column is-paddingless has-text-right is-hidden-touch">
+          <small>⛓️ Connected to: {{.NetworkTitle}}</small>
+          {{if .Recaptcha}}
+          <span class="is-hidden-desktop-only">
+            <span class="divider">•</span>
+            <small>protected by reCaptcha</small>
+          </span>
+          {{end}}
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script>
+    // Global variables to hold the current status of the faucet
+    var attempt = 0;
+    var server;
+    var tier = 0;
+    var requests = [];
+
+    // Convert number to nicer format
+    var SI_SYMBOL_EXT = ["", "k", "M", "G", "T", "P", "E", "Z", "Y", "R", "Q"];
+
+    function abbreviateNumber(number) {
+      var level = Math.log10(number) / 3 | 0;
+      if(level == 0) return number;
+      var suffix = SI_SYMBOL_EXT[level];
+      var scale = Math.pow(10, level * 3);
+      var scaled = number / scale;
+      return scaled.toFixed(2) + suffix;
+    }
+
+    // Define a function that creates closures to drop old requests
+    var dropper = function(hash) {
+      return function() {
+        for (var i=0; i<requests.length; i++) {
+          if (requests[i].tx.hash == hash) {
+            requests.splice(i, 1);
+            break;
+          }
+        }
+      }
+    };
+
+    // Define the function that submits a gist url to the server
+    var submit = function({{if .Recaptcha}}captcha{{end}}) {
+      server.send(JSON.stringify({url: $("#social")[0].value, tier: $("input[name='tier']:checked").val(){{if .Recaptcha}}, captcha: captcha{{end}}}));
+      {{if .Recaptcha}}grecaptcha.reset();{{end}}
+    };
+
+    // Define a method to reconnect upon server loss
+    var reconnect = function() {
+      server = new WebSocket(((window.location.protocol === "https:") ? "wss://" : "ws://") + window.location.host + "/api");
+
+      server.onmessage = function(event) {
+        var msg = JSON.parse(event.data);
+        if (msg === null) {
+          return;
+        }
+
+        if (msg.funds !== undefined) {
+          $("#funds").text(abbreviateNumber(Number(msg.funds)));
+        }
+        if (msg.funded !== undefined) {
+          $("#funded").text(msg.funded);
+        }
+        if (msg.peers !== undefined) {
+          $("#peers").text(msg.peers);
+        }
+        if (msg.number !== undefined) {
+          $("#block").text(parseInt(msg.number, 16));
+        }
+        if (msg.error !== undefined) {
+          noty({layout: 'topCenter', text: msg.error, type: 'error', timeout: 5000, progressBar: true});
+        }
+        if (msg.success !== undefined) {
+          noty({layout: 'topCenter', text: msg.success, type: 'success', timeout: 5000, progressBar: true});
+        }
+      }
+      server.onclose = function() { setTimeout(reconnect, 3000); };
+    }
+
+    // Establish a websocket connection to the API server
+    reconnect();
+  </script>
+  {{if .Recaptcha}}<script src="https://www.google.com/recaptcha/api.js" async defer></script>{{end}}
+</body>
+</html>

@@ -1,0 +1,57 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                      http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>cc.coreblockchain</groupId>
+  <artifactId>gocore</artifactId>
+  <version>{{.Version}}</version>
+  <packaging>aar</packaging>
+
+  <name>Android Core Client</name>
+  <description>Android port of the go-core libraries and node</description>
+  <url>https://github.com/core-coin/go-core</url>
+  <inceptionYear>2015</inceptionYear>
+
+  <licenses>
+    <license>
+      <name>GNU Lesser General Public License, Version 3.0</name>
+      <url>https://www.gnu.org/licenses/lgpl-3.0.en.html</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <organization>
+    <name>Core</name>
+    <url>https://coreblockchain.cc</url>
+  </organization>
+
+  <developers>
+    <developer>
+      <id>core-coin</id>
+      <name>CORE FOUNDATION</name>
+      <email>dev@coreblockchain.cc</email>
+      <url>https://github.com/core-coin</url>
+      <properties>
+        <picUrl>https://avatars1.githubusercontent.com/u/35351757?s=256</picUrl>
+      </properties>
+    </developer>
+  </developers>
+
+  <contributors>{{range .Contributors}}
+    <contributor>
+      <name>{{.Name}}</name>
+      <email>{{.Email}}</email>
+    </contributor>{{end}}
+  </contributors>
+
+  <issueManagement>
+    <system>GitHub Issues</system>
+    <url>https://github.com/core-coin/go-core/issues/</url>
+  </issueManagement>
+
+  <scm>
+    <url>https://github.com/core-coin/go-core</url>
+  </scm>
+</project>

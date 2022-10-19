@@ -1,0 +1,21 @@
+This directory contains accounts for testing.
+The password that unlocks them is "foobar".
+
+The "good" key files which are supposed to be loadable are:
+
+- File: UTC--2020-02-27T09-51-06.983129511Z--e8cf4629acb360350399b6cff367a97cf36e62b9
+  Address: 0xe8cf4629acb360350399b6cff367a97cf36e62b9
+- File: aaa
+  Address: 0x5337dc760bff449e5c187e080797283ad42e69bd
+- File: zzz
+  Address: 0x348d6db8bfe52ab1199deeacbc4c1ffa0686d149
+
+The other files (including this README) are broken in various ways
+and should not be picked up by package accounts:
+
+- File: no-address (missing address field, otherwise same as "aaa")
+- File: garbage (file with random data)
+- File: empty (file with no content)
+- File: swapfile~ (should be skipped)
+- File: .hiddenfile (should be skipped)
+- File: foo/... (should be skipped because it is a directory)

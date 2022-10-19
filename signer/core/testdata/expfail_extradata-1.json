@@ -1,0 +1,76 @@
+{
+  "types": {
+    "CIP712Domain": [
+      {
+        "name": "name",
+        "type": "string"
+      },
+      {
+        "name": "version",
+        "type": "string"
+      },
+      {
+        "name": "networkId",
+        "type": "uint256 ... and now for something completely different"
+      },
+      {
+        "name": "verifyingContract",
+        "type": "address"
+      }
+    ],
+    "Person": [
+      {
+        "name": "name",
+        "type": "string"
+      },
+      {
+        "name": "test",
+        "type": "uint8"
+      },
+      {
+        "name": "test2",
+        "type": "uint8"
+      },
+      {
+        "name": "wallet",
+        "type": "address"
+      }
+    ],
+    "Mail": [
+      {
+        "name": "from",
+        "type": "Person"
+      },
+      {
+        "name": "to",
+        "type": "Person"
+      },
+      {
+        "name": "contents",
+        "type": "string"
+      }
+    ]
+  },
+  "primaryType": "Mail",
+  "domain": {
+    "name": "Core Mail",
+    "version": "1",
+    "networkId": "1",
+    "verifyingContract": "cb10cccccccccccccccccccccccccccccccccccccccc"
+  },
+  "message": {
+    "from": {
+      "name": "Cow",
+      "test": "3",
+      "test2": 5.0,
+      "wallet": "cb40cd2a3d9f938e13cd947ec05abc7fe734df8dd826"
+    },
+    "to": {
+      "name": "Bob",
+      "test": "0",
+      "test2": 5,
+      "wallet": "cb46bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+    },
+    "contents": "Hello, Bob!"
+  }
+}
