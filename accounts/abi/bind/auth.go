@@ -17,6 +17,7 @@
 package bind
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"io"
@@ -183,5 +184,6 @@ func NewClefTransactor(clef *external.ExternalSigner, account accounts.Account) 
 			fmt.Println("newClefe:", tx.Energy())
 			return tx, err
 		},
+		Context: context.Background(),
 	}
 }
