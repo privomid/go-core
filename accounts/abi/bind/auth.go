@@ -18,10 +18,12 @@ package bind
 
 import (
 	"errors"
-	"github.com/core-coin/go-core/log"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"math/big"
+
+	"github.com/core-coin/go-core/log"
 
 	eddsa "github.com/core-coin/go-goldilocks"
 
@@ -175,7 +177,11 @@ func NewClefTransactor(clef *external.ExternalSigner, account accounts.Account) 
 			if address != account.Address {
 				return nil, ErrNotAuthorized
 			}
-			return clef.SignTx(account, transaction, nil) // Clef enforces its own network id
+			tx, err := clef.SignTx(account, transaction, nil) // Clef enforces its own network id
+			fmt.Println("newCleferr:", err)
+			fmt.Println("newClefn:", tx.Nonce())
+			fmt.Println("newClefe:", tx.Energy())
+			return tx, err
 		},
 	}
 }
