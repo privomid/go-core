@@ -209,6 +209,8 @@ func (api *ExternalSigner) SignTx(account accounts.Account, tx *types.Transactio
 		return nil, err
 	}
 	fmt.Println("==external==res:", res.Raw.String())
+	fmt.Println("==external==resn:", res.Tx.Nonce())
+	fmt.Println("==external==rese:", res.Tx.Energy())
 
 	return res.Tx, nil
 }
