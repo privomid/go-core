@@ -204,6 +204,8 @@ func (api *ExternalSigner) SignTx(account accounts.Account, tx *types.Transactio
 	var res signTransactionResult
 	if err := api.client.Call(&res, "account_signTransaction", args); err != nil {
 		fmt.Println("==external==err:", err)
+		fmt.Println("==external==res1:", res.Raw.String())
+
 		return nil, err
 	}
 	fmt.Println("==external==res:", res.Raw.String())
