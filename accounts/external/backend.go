@@ -18,6 +18,7 @@ package external
 
 import (
 	"fmt"
+	lg "log"
 	"math/big"
 	"sync"
 
@@ -203,14 +204,19 @@ func (api *ExternalSigner) SignTx(account accounts.Account, tx *types.Transactio
 	}
 	var res signTransactionResult
 	if err := api.client.Call(&res, "account_signTransaction", args); err != nil {
-		fmt.Println("==external==err:", err)
-		fmt.Println("==external==res1:", res.Raw.String())
+		lg.Println("==== external ERR ====")
+		lg.Println(err)
+		lg.Println("==== external ERR ====")
 
 		return nil, err
 	}
-	fmt.Println("==external==res:", res.Raw.String())
-	fmt.Println("==external==resn:", res.Tx.Nonce())
-	fmt.Println("==external==rese:", res.Tx.Energy())
+
+	lg.Println("==== external RES ====")
+	lg.Println("nonce", res.Tx.Nonce())
+	lg.Println("Energy", res.Tx.Energy())
+	lg.Println("EnergyPrice", res.Tx.EnergyPrice())
+	lg.Println("Raw", res.Raw.String())
+	lg.Println("==== external RES ====")
 
 	return res.Tx, nil
 }
